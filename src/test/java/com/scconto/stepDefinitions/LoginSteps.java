@@ -13,16 +13,18 @@ public class LoginSteps {
     HomePage home;
     LoginPage login;
     String name;
-    String email;
+    String validEmail;
+    String invalidEmail;
     String password;
+    String errorText;
 
     @And("User enter valid data")
     public void enter_valid_data() throws IOException {
-        email = PropertiesLoader.loadProperty("valid.email");
+        validEmail = PropertiesLoader.loadProperty("valid.email");
         password = PropertiesLoader.loadProperty("valid.password");
 
         login = Selenide.page(LoginPage.class);
-        login.enterData(email, password);
+        login.enterData(validEmail, password);
     }
 
     @And("User clicks on Anmelden button")
@@ -40,5 +42,21 @@ public class LoginSteps {
     public void verify_user_name() throws IOException {
         name = PropertiesLoader.loadProperty("user.name");
         login.verifyName(name);
+    }
+
+    @And("User enter invalid data")
+    public void enter_invalid_data() throws IOException {
+        invalidEmail = PropertiesLoader.loadProperty("invalid.email");
+
+        login = Selenide.page(LoginPage.class);
+        login.enterData(invalidEmail, password);
+    }
+
+    @Then("User verifies incorrect email prompt")
+    public void verify_incorrect_email_prompt() throws IOException {
+        errorText = PropertiesLoader.loadProperty("error.text");
+
+        login = Selenide.page(LoginPage.class);
+        login.verifyIncorrectPrompt(errorText);
     }
 }

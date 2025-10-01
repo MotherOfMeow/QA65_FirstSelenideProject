@@ -45,4 +45,11 @@ public class LoginPage {
     public SelenideElement verifyName(String name) {
         return $(nameTitle).shouldHave(text(name));
     }
+
+    @FindBy(id = "loginEmail-error")
+    WebElement errorText;
+
+    public SelenideElement verifyIncorrectPrompt(String promptText) {
+        return $(errorText).shouldHave(text(promptText));
+    }
 }
